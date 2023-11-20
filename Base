@@ -1,0 +1,46 @@
+
+syms a1 a2 a3 b1 b2 b3 c1 c2 c3
+
+A =[
+    a1    b1    c1    
+    a2    b2    c2    
+    a3    b3    c3  
+];
+
+B =[
+    c1    b1+2*a1    a1    
+    c2    b2+2*a2    a2    
+    c3    b3+2*a3    a3  
+];
+
+A_InverseMatrix=inv(A);   %A的逆矩阵
+
+A_Det=det(A);   %A的行列式
+
+RowREF_A = rref(A);  %行最简
+
+P=B*A_InverseMatrix;
+
+disp('逆矩阵：');
+disp(A_InverseMatrix);
+
+disp('行列式：');
+disp(A_Det);
+
+disp('P=');
+disp(P);
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
