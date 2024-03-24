@@ -1,0 +1,121 @@
+%Matlab解线性方程组
+% 定义系数矩阵 A 和右侧向量 b
+A = [1, 2, 3; 4, 5, 6; 7, 8, 10];
+b = [1; 2; 3];
+
+% 解线性方程组 Ax = b
+x = A \ b;
+
+% 显示解
+disp('解 x:');
+disp(x);
+
+
+
+%LU分解
+% 定义一个矩阵 A
+A = [1, 2, 3, 4; 
+     1, 4, 9, 16; 
+     1, 8, 27, 64
+     1, 16, 81, 256];
+
+% 对矩阵 A 进行 LU 分解
+[L, U] = my_lu_decomposition_with_unit_P(A);
+
+% 显示分解结果
+disp('下三角矩阵 L:');
+disp(L);
+disp('上三角矩阵 U:');
+disp(U);
+
+
+function [L, U] = my_lu_decomposition_with_unit_P(A)
+    % 获取矩阵 A 的大小
+    [m, n] = size(A);
+    if m ~= n
+        error('输入矩阵必须是方阵');
+    end
+    
+    % 初始化 L 和 U
+    L = eye(n); % 单位矩阵
+    U = zeros(n);
+    
+    % 对 A 进行 LU 分解
+    for k = 1:n
+        % 更新 U 的第 k 行
+        for j = k:n
+            U(k, j) = A(k, j) - L(k, 1:k-1) * U(1:k-1, j);
+        end
+        
+        % 更新 L 的第 k 列
+        for i = k+1:n
+            L(i, k) = A(i, k) - L(i, 1:k-1) * U(1:k-1, k);
+            L(i, k) = L(i, k) / U(k, k);
+        end
+    end
+end
+
+
+
+%追赶法
+% 定义系数数组 a、b 和 c
+
+a = [0,-1,-1,-1]; 
+b = [2,2,2,2];
+c = [-1,-1,-1,0];
+d = [0,1,0,2.5];
+
+% 获取数组的大小
+n = length(b);
+
+% 初始化 l ,u数组
+l = zeros(n, 1);
+u = zeros(n, 1);
+y = zeros(n, 1);
+x = zeros(n, 1);
+
+% 计算 u(1)
+u(1) = b(1);
+
+% 计算 l(i)
+for i = 2:n
+
+        % 计算 l(i)
+    l(i) = a(i) / u(i-1);
+
+    % 计算 u(i)
+    u(i) = b(i) - c(i-1) * l(i);
+
+end
+
+% 显示结果
+disp('l(i):');
+disp(l);
+
+disp('u(i):');
+disp(u);
+
+y(1)=d(1);
+for i = 2:n
+
+       y(i)=d(i)-l(i)*y(i-1);
+
+end
+
+x(n)=y(n)/u(n);
+for i = n-1:-1:1
+
+       x(i)=( y(i)-c(i)*x(i+1) )/u(i);
+
+end
+
+
+disp('y(i):');
+disp(y);
+
+
+disp('x(i):');
+disp(x);
+
+
+
